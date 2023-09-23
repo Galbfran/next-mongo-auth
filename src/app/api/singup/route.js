@@ -16,7 +16,11 @@ export async function POST(req){
             const hashedPassword = await bcryprt.hash(password, 12)
             const newUser = new User({fullname, email, password:hashedPassword})
             const userSave = await newUser.save()
-            return NextResponse.json(userSave,{status:201})
+            return NextResponse.json({
+                _id:userSave._id,
+                email:userSave.email,
+                fullname:userSave.fullname
+            },{status:201})
         }
         
     } catch (error) {
