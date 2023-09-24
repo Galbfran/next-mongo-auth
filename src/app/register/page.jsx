@@ -1,6 +1,7 @@
 "use client"
 import axios, { AxiosError } from "axios"
 import { useState } from "react"
+import { singIn } from "next-auth/react"
 
 
 const RegistrerPage = () =>{
@@ -16,8 +17,15 @@ const RegistrerPage = () =>{
         const password = fomrData.get("password")
         const fullname = fomrData.get("fullname")
         try {
-            const data = await axios.post("/api/singup", {email, password, fullname})
-            console.log(data.data)
+            console.log(email , password , fullname)
+            const data = await axios.post("/api/auth/signup", {email, password, fullname})
+            console.log(data , "data")
+            const res = await singIn("credentials", {
+                email: data.data.email,
+                password: fomrData.get("password"),
+                redirect:false
+            })
+            console.log(res , "res")
         } catch (error) {
             if(error instanceof AxiosError){
                 error.response?.data.message && setError(error.response.data.message)
@@ -33,9 +41,9 @@ const RegistrerPage = () =>{
             <form  onSubmit={handlerSubmit}>
                 {error && <p className="bg-red-500 p-2 m-2">{error}</p>}
                 <h2>Sing Up</h2>
-                <input type="text" name="fullname" placeholder="franco" className={estilosInput} autocomplete="off"/>
-                <input type="email" name="email" placeholder="pepito@gmail.com" className={estilosInput} autocomplete="off"/>
-                <input type="password" name="password" placeholder="*************" className={estilosInput} autocomplete="off"s/>
+                <input type="text" name="fullname" placeholder="franco" className={estilosInput} autoComplete="off"/>
+                <input type="email" name="email" placeholder="pepito@gmail.com" className={estilosInput} autoComplete="off"/>
+                <input type="password" name="password" placeholder="*************" className={estilosInput} autoComplete="off"/>
                 <button  className={estilosButton}>
                     Register
                 </button>

@@ -7,7 +7,7 @@ const conn = {
 };
 
 const passwordMongo = process.env.PASSWORD_MONGO;
-export async function connectDB() {
+export default async function connectDB() {
     if (conn.isConnected) return;
 //mongodb+srv://<user>:<password>@<cluster-url>?retryWrites=true&w=majority
 const db = await mongoose.connect(`mongodb+srv://francogalbiati984:${passwordMongo}@cluster0.t85pn3y.mongodb.net/`);
